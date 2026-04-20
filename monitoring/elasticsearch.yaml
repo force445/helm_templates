@@ -70,7 +70,8 @@ envFrom: []
 # Disable it to use your own elastic-credential Secret.
 secret:
   enabled: true
-  password: "qwer1234" # generated randomly if not defined
+  # Leave empty to let the chart generate a password, or use your own Kubernetes Secret.
+  password: ""
 
 # A list of secrets and their paths to mount inside the pod
 # This is useful for mounting certificates for security and for mounting

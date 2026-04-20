@@ -13,6 +13,8 @@ This repository stores Helm values templates and deployment notes for several Ku
 - `promtail.yaml`: Promtail values template
 - `elasticsearch.yaml`: Elasticsearch values template
 - `elasticsearch.md`: Elasticsearch installation and backup notes
+- `gpu-exporter.md`: GPU exporter setup notes
+- `mikrotik.md`: MikroTik related notes
 - `oidc.md`: Grafana OIDC setup notes
 
 ### `database/`
@@ -70,11 +72,15 @@ Use the same pattern for the database and GitOps templates once you confirm the 
 Additional component-specific notes are included here:
 
 - [monitoring/elasticsearch.md](monitoring/elasticsearch.md): Elasticsearch install, persistence, and snapshot backup notes
+- [monitoring/gpu-exporter.md](monitoring/gpu-exporter.md): GPU exporter notes
+- [monitoring/mikrotik.md](monitoring/mikrotik.md): MikroTik notes
 - [monitoring/oidc.md](monitoring/oidc.md): Grafana Generic OAuth / OIDC setup notes
 
 ## Secrets
 
 Do not commit real passwords, tokens, client secrets, or API keys into these YAML files.
+
+Treat every values file in this repository as a template that must be reviewed and sanitized before commit and before deployment.
 
 Prefer Kubernetes Secrets and reference them from the values files where supported. For example, in the current Grafana template the main secret-related keys are:
 
@@ -85,6 +91,8 @@ Prefer Kubernetes Secrets and reference them from the values files where support
 - `smtp.existingSecret`
 
 This keeps sensitive data outside Git while still allowing Helm to wire the application to the required credentials.
+
+If a chart exposes fields such as `password`, `token`, `secretKey`, `clientSecret`, or `existingSecret`, prefer the secret reference path over hardcoded inline credentials.
 
 ## What To Review Before Deploying
 
@@ -118,3 +126,4 @@ For Grafana specifically, review:
 - `monitoring/grafana.yaml` includes inline comments on keys that are expected to be set explicitly later.
 - In the current Grafana template, `grafana.ini.server.domain` is derived from the first ingress host when ingress is enabled.
 - Chart versions are not pinned consistently in this repository, so confirm upstream chart compatibility before applying changes.
+- Run a secret scan before pushing changes, especially after copying vendor chart defaults into this repository.

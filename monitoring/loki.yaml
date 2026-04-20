@@ -5165,13 +5165,15 @@ minio:
   drivesPerNode: 2
   # root user
   rootUser: root-user
-  rootPassword: supersecretpassword
+  # Set via a Kubernetes Secret or another environment-specific secret source.
+  rootPassword: ""
   # The first user in the list below is used for Loki authentication.
   # You can add additional users if desired; they will not impact Loki.
   # `accessKey` = username, `secretKey` = password
   users:
     - accessKey: logs-user
-      secretKey: supersecretpassword
+      # Set via a Kubernetes Secret or another environment-specific secret source.
+      secretKey: ""
       policy: readwrite
   buckets:
     - name: chunks
